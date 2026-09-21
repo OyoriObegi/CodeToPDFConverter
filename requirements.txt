@@ -1,0 +1,5 @@
+Flask==3.0.3
+WeasyPrint==62.3
+nbconvert==7.16.4
+Pygments==2.18.0
+gunicorn==22.0.0

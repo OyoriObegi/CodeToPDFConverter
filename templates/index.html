@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code to PDF Converter</title>
+    <meta name="description" content="Convert your Python scripts and Jupyter Notebooks to beautifully formatted PDF documents.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background-elements">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <h1>Code to PDF Converter</h1>
+            <p>Transform your <span class="highlight">.py</span> and <span class="highlight">.ipynb</span> files into beautifully formatted PDF documents instantly.</p>
+        </header>
+
+        <section class="upload-section">
+            <form id="upload-form" class="drop-zone" enctype="multipart/form-data">
+                <input type="file" name="file" id="file-input" accept=".py,.ipynb" class="hidden-input">
+                
+                <div class="drop-content">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h2>Drag & Drop your file here</h2>
+                    <p>or <span class="browse-link">browse from your computer</span></p>
+                    <span class="file-hint">Supported formats: Python (.py), Jupyter Notebook (.ipynb)</span>
+                </div>
+            </form>
+
+            <div id="file-details" class="file-details hidden">
+                <div class="file-info">
+                    <svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                        <polyline points="13 2 13 9 20 9"></polyline>
+                    </svg>
+                    <span id="file-name" class="file-name">filename.py</span>
+                    <button type="button" id="remove-file" class="remove-btn" aria-label="Remove file">✕</button>
+                </div>
+                <button type="button" id="convert-btn" class="convert-btn">Convert to PDF</button>
+            </div>
+        </section>
+
+        <div id="loading-overlay" class="overlay hidden">
+            <div class="spinner"></div>
+            <p>Converting your file...<br><span class="sub-text">This might take a moment for large notebooks.</span></p>
+        </div>
+        
+        <div id="error-message" class="error-message hidden">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="error-text">An error occurred.</span>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
