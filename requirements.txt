@@ -1,7 +1,6 @@
 Flask==3.0.3
-WeasyPrint==62.3
+playwright==1.44.0
 nbconvert==7.16.4
 Pygments==2.18.0
 gunicorn==22.0.0
 mistune<3
-pydyf<0.11.0
