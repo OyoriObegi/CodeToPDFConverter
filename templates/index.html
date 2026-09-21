@@ -54,8 +54,25 @@
         <div id="loading-overlay" class="overlay hidden">
             <div class="spinner"></div>
             <p>Converting your file...<br><span class="sub-text">This might take a moment for large notebooks.</span></p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0%</div>
         </div>
         
+        <div id="success-overlay" class="overlay hidden">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+            </div>
+            <h2>Conversion Complete!</h2>
+            <p>Your PDF is ready for download.</p>
+            <a id="download-link" class="download-btn hidden">Download PDF</a>
+            <button type="button" id="convert-another-btn" class="convert-another-btn">Convert Another File</button>
+        </div>
+
         <div id="error-message" class="error-message hidden">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>

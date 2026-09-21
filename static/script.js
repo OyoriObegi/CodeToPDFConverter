@@ -9,7 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorMessage = document.getElementById('error-message');
     const errorText = document.getElementById('error-text');
 
+    const successOverlay = document.getElementById('success-overlay');
+    const downloadLink = document.getElementById('download-link');
+    const convertAnotherBtn = document.getElementById('convert-another-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+
     let currentFile = null;
+    let progressInterval = null;
 
     // Prevent default drag behaviors
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -80,7 +87,38 @@ document.addEventListener('DOMContentLoaded', () => {
         fileInput.value = '';
         dropZone.style.display = 'block';
         fileDetails.classList.add('hidden');
+        successOverlay.classList.add('hidden');
+        if (downloadLink.href) {
+            window.URL.revokeObjectURL(downloadLink.href);
+            downloadLink.href = '';
+        }
         hideError();
+    }
+
+    convertAnotherBtn.addEventListener('click', resetUpload);
+
+    // Simulated progress function
+    function startProgress() {
+        let progress = 0;
+        progressBar.style.width = '0%';
+        progressText.textContent = '0%';
+        
+        // Typical conversion takes 5-15 seconds. We'll simulate progress up to 95%
+        progressInterval = setInterval(() => {
+            if (progress < 90) {
+                // Slower as it gets higher
+                const increment = Math.random() * (90 - progress) * 0.1 + 1;
+                progress += increment;
+                progressBar.style.width = `${Math.min(95, progress)}%`;
+                progressText.textContent = `${Math.floor(progress)}%`;
+            }
+        }, 300);
+    }
+
+    function finishProgress() {
+        clearInterval(progressInterval);
+        progressBar.style.width = '100%';
+        progressText.textContent = '100%';
     }
 
     // Convert file
@@ -92,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         loadingOverlay.classList.remove('hidden');
         hideError();
+        startProgress();
 
         try {
             const response = await fetch('/convert', {
@@ -104,37 +143,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(errorData.error || 'Conversion failed.');
             }
 
-            // Handle the file download
-            const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            
-            // Set suggested filename based on original
-            const originalName = currentFile.name;
-            const newName = originalName.substring(0, originalName.lastIndexOf('.')) + '.pdf';
-            
-            a.style.display = 'none';
-            a.href = downloadUrl;
-            a.download = newName;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(downloadUrl);
-            document.body.removeChild(a);
-            
-            // Optional: reset after successful download
-            // resetUpload();
+            finishProgress();
+
+            // Wait a tiny bit for the 100% to render, then show success screen
+            setTimeout(async () => {
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+                
+                const originalName = currentFile.name;
+                const newName = originalName.substring(0, originalName.lastIndexOf('.')) + '.pdf';
+                
+                downloadLink.href = downloadUrl;
+                downloadLink.download = newName;
+                downloadLink.classList.remove('hidden');
+                
+                loadingOverlay.classList.add('hidden');
+                successOverlay.classList.remove('hidden');
+            }, 500);
 
         } catch (error) {
-            showError(error.message);
-        } finally {
+            clearInterval(progressInterval);
             loadingOverlay.classList.add('hidden');
+            showError(error.message);
         }
     });
 
     function showError(message) {
         errorText.textContent = message;
         errorMessage.classList.remove('hidden');
-        // Shake effect gets re-triggered by removing and re-adding class
         errorMessage.style.animation = 'none';
         errorMessage.offsetHeight; /* trigger reflow */
         errorMessage.style.animation = null;
