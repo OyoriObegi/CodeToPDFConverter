@@ -1,7 +1,7 @@
 import os
 import tempfile
 from flask import Flask, request, render_template, send_file, jsonify
-from converter import convert_py_to_pdf, convert_ipynb_to_pdf
+from converter import convert_py_to_pdf, convert_ipynb_to_pdf, convert_md_to_pdf
 
 app = Flask(__name__)
 
@@ -25,8 +25,8 @@ def convert():
     filename = file.filename
     ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else ''
     
-    if ext not in ['py', 'ipynb']:
-        return jsonify({'error': 'Unsupported file type. Please upload .py or .ipynb files.'}), 400
+    if ext not in ['py', 'ipynb', 'md']:
+        return jsonify({'error': 'Unsupported file type. Please upload .py, .ipynb, or .md files.'}), 400
     
     try:
         content = file.read().decode('utf-8')
@@ -39,6 +39,8 @@ def convert():
             convert_py_to_pdf(content, pdf_path)
         elif ext == 'ipynb':
             convert_ipynb_to_pdf(content, pdf_path)
+        elif ext == 'md':
+            convert_md_to_pdf(content, pdf_path)
             
         # Return the generated PDF to the user
         return send_file(

@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = files[0];
         const ext = file.name.split('.').pop().toLowerCase();
         
-        if (ext !== 'py' && ext !== 'ipynb') {
-            showError('Invalid file type. Please upload a .py or .ipynb file.');
+        if (ext !== 'py' && ext !== 'ipynb' && ext !== 'md') {
+            showError('Invalid file type. Please upload a .py, .ipynb, or .md file.');
             return;
         }
 

@@ -19,12 +19,12 @@
     <main class="container">
         <header>
             <h1>Code to PDF Converter</h1>
-            <p>Transform your <span class="highlight">.py</span> and <span class="highlight">.ipynb</span> files into beautifully formatted PDF documents instantly.</p>
+            <p>Transform your <span class="highlight">.py</span>, <span class="highlight">.ipynb</span>, and <span class="highlight">.md</span> files into beautifully formatted PDF documents instantly.</p>
         </header>
 
         <section class="upload-section">
             <form id="upload-form" class="drop-zone" enctype="multipart/form-data">
-                <input type="file" name="file" id="file-input" accept=".py,.ipynb" class="hidden-input">
+                <input type="file" name="file" id="file-input" accept=".py,.ipynb,.md" class="hidden-input">
                 
                 <div class="drop-content">
                     <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -34,7 +34,7 @@
                     </svg>
                     <h2>Drag & Drop your file here</h2>
                     <p>or <span class="browse-link">browse from your computer</span></p>
-                    <span class="file-hint">Supported formats: Python (.py), Jupyter Notebook (.ipynb)</span>
+                    <span class="file-hint">Supported formats: Python (.py), Jupyter Notebook (.ipynb), Markdown (.md)</span>
                 </div>
             </form>
 
